@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:grothon/providers/shop_provider.dart';
 import 'package:grothon/screens/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(
@@ -33,19 +32,3 @@ class ShoppingApp extends StatelessWidget {
     );
   }
 }
-
-// models/shop.dart
-
-// providers/shop_provider.dart
-
-// screens/home_screen.dart
-// screens/shop_detail_screen.dart
-
-// pubspec.yaml (add these dependencies)
-/*
-dependencies:
-  flutter:
-    sdk: flutter
-  provider: ^6.0.3
-  geolocator: ^9.0.2
-*/

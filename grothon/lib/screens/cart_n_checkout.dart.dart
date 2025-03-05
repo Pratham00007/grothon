@@ -14,8 +14,91 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // ... (previous implementation continues)
-      
-      // Bottom Cart Summary and Checkout
+       appBar: AppBar(
+        title: Text('My Cart'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.clear_all),
+            onPressed: () {
+              setState(() {
+                _cartManager.clearCart();
+              });
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: _cartManager.items.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.shopping_cart_outlined,
+                        size: 100,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        'Your cart is empty',
+                        style: Theme.of(context).textTheme.bodyMedium
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _cartManager.items.length,
+                  itemBuilder: (context, index) {
+                    final cartItem = _cartManager.items[index];
+                    return ListTile(
+                      leading: Image.network(
+                        cartItem.product.imageUrl,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
+                      title: Text(cartItem.product.name),
+                      subtitle: Text('\$${cartItem.product.price.toStringAsFixed(2)}'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.remove),
+                            onPressed: () {
+                              setState(() {
+                                if (cartItem.quantity > 1) {
+                                  _cartManager.updateQuantity(
+                                    cartItem.product, 
+                                    cartItem.quantity - 1
+                                  );
+                                } else {
+                                  _cartManager.removeFromCart(cartItem.product);
+                                }
+                              });
+                            },
+                          ),
+                          Text('${cartItem.quantity}'),
+                          IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                _cartManager.updateQuantity(
+                                  cartItem.product, 
+                                  cartItem.quantity + 1
+                                );
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+          ),
+            ]
+            ),      // Bottom Cart Summary and Checkout
       bottomNavigationBar: _cartManager.items.isNotEmpty
         ? Container(
             padding: EdgeInsets.all(16),

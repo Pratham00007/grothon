@@ -3,7 +3,6 @@ import 'package:grothon/models/search_results.dart';
 import 'package:provider/provider.dart';
 import '../providers/shop_provider.dart';
 import 'shop_detail_screen.dart';
-import 'global_search_results_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

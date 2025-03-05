@@ -86,7 +86,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 actions: [
                   // Cart and Wishlist Icons in App Bar
                   IconButton(
-                    icon: Icon(Icons.shopping_cart),
+                    icon: Icon(Icons.shopping_cart,color: Colors.white,),
                     onPressed: () {
                       // Navigate to Cart Screen
                       Navigator.push(
@@ -98,7 +98,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.favorite),
+                    icon: Icon(Icons.favorite,color: Colors.white,),
                     onPressed: () {
                       // Navigate to Wishlist Screen
                       Navigator.push(
