@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:grothon/main.dart';
-import 'package:grothon/models/shop.dart';
+import 'package:grothon/models/search_results.dart';
+import '../models/shop.dart';
 
 class ShopProvider with ChangeNotifier {
   List<Shop> _shops = [
@@ -16,14 +16,37 @@ class ShopProvider with ChangeNotifier {
         ShopItem(
           id: '1',
           name: 'Organic Apples',
-          description: 'Fresh organic apples',
+          description: 'Fresh organic red apples',
           price: 2.99,
           imageUrl: 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg',
         ),
-        // More items...
+        ShopItem(
+          id: '2',
+          name: 'Green Apples',
+          description: 'Crisp green apples',
+          price: 3.49,
+          imageUrl: 'https://cdn.pixabay.com/photo/2023/12/07/21/16/grape-8436353_1280.jpg',
+        ),
       ],
     ),
-    // More shops...
+    Shop(
+      id: '2',
+      name: 'Grocery World',
+      address: '456 Market St, Townsville',
+      photoUrl: 'https://cdn.pixabay.com/photo/2016/08/16/07/32/showcase-1597292_1280.jpg',
+      latitude: 40.7300,
+      longitude: -74.0100,
+      items: [
+        ShopItem(
+          id: '3',
+          name: 'Red Delicious Apples',
+          description: 'Sweet red delicious apples',
+          price: 3.29,
+          imageUrl: 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg',
+        ),
+      ],
+    ),
+    // Add more shops and items
   ];
 
   List<Shop> get shops => _shops;
@@ -52,19 +75,40 @@ class ShopProvider with ChangeNotifier {
     }
   }
 
-  List<Shop> searchShopsAndItems(String query) {
+  // Enhanced search method to search across all shops and items
+  List<SearchResult> searchGlobally(String query) {
     query = query.toLowerCase();
-    return _shops.where((shop) {
-      // Search by shop name
-      bool matchesShopName = shop.name.toLowerCase().contains(query);
-      
-      // Search by item name or description
-      bool matchesItems = shop.items.any((item) => 
+    List<SearchResult> results = [];
+
+    for (var shop in _shops) {
+      // Check if shop name matches
+      bool shopNameMatches = shop.name.toLowerCase().contains(query);
+
+      // Check if any item in the shop matches
+      var matchingItems = shop.items.where((item) => 
         item.name.toLowerCase().contains(query) ||
         item.description.toLowerCase().contains(query)
-      );
+      ).toList();
 
-      return matchesShopName || matchesItems;
-    }).toList();
+      // If shop name or any items match, add to results
+      if (shopNameMatches || matchingItems.isNotEmpty) {
+        if (shopNameMatches) {
+          results.add(SearchResult(
+            type: SearchResultType.Shop,
+            shop: shop,
+            item: null,
+          ));
+        }
+
+        // Add matching items
+        results.addAll(matchingItems.map((item) => SearchResult(
+          type: SearchResultType.Item,
+          shop: shop,
+          item: item,
+        )));
+      }
+    }
+
+    return results;
   }
 }
