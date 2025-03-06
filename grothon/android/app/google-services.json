@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "877786522652",
+    "project_id": "grothon-b22cb",
+    "storage_bucket": "grothon-b22cb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877786522652:android:01d5601d51d09ced292bd9",
+        "android_client_info": {
+          "package_name": "com.example.grothon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQPPSJ8T03EV74lI4B_MRTFMF7TQdN7aI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
