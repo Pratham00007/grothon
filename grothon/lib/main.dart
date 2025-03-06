@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:grothon/providers/shop_provider.dart';
 import 'package:grothon/screens/home_screen.dart';
+import 'package:grothon/screens/login%20and%20signup/login.dart';
+
 import 'package:provider/provider.dart';
 
 void main() {
@@ -28,7 +30,7 @@ class ShoppingApp extends StatelessWidget {
           centerTitle: true,
         ),
       ),
-      home: HomeScreen(),
+      home: WelcomePage(),
     );
   }
 }
