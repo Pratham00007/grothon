@@ -435,5 +435,3 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
     );
   }
 }
-// Customer authentication page (handles both login and registration)
-// Customer authentication page (handles both login and registration)
