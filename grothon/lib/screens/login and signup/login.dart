@@ -247,6 +247,7 @@ class _UserTypeButton extends StatelessWidget {
 }
 
 // Shopkeeper authentication page (handles both login and registration)
+// Shopkeeper authentication page (handles both login and registration)
 class ShopkeeperAuthPage extends StatefulWidget {
   final bool isLogin;
 
@@ -274,220 +275,293 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Shop image section (only for registration)
-              if (!widget.isLogin)
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      image: _shopImage != null
-                          ? DecorationImage(
-                              image: FileImage(_shopImage!),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                    ),
-                    child: _shopImage == null
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_a_photo,
-                                size: 64,
-                                color: Colors.grey[500],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Upload Shop Photo',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          )
-                        : null,
-                  ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.indigo[600]!, Colors.indigo[900]!],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // Shop image section (only for registration)
+                      if (!widget.isLogin) ...[
+                        // Shop icon/profile
+                        Align(
+                          alignment: Alignment.center,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.indigo[50],
+                                  shape: BoxShape.circle,
+                                  image: _shopImage != null
+                                    ? DecorationImage(
+                                        image: FileImage(_shopImage!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                                ),
+                                child: _shopImage == null
+                                  ? Icon(
+                                      Icons.storefront,
+                                      size: 60,
+                                      color: Colors.indigo[800],
+                                    )
+                                  : null,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: _pickImage,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.indigo[800],
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.add_a_photo,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ] else ...[
+                        // Login icon
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.indigo[50],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.storefront,
+                              size: 48,
+                              color: Colors.indigo[800],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                      
+                      // Header text
                       Text(
-                        widget.isLogin ? 'Shopkeeper Login' : 'Register Your Shop',
+                        widget.isLogin ? 'Welcome Back!' : 'Register Your Shop',
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
                         widget.isLogin
-                            ? 'Welcome back! Please login to your account'
-                            : 'Create an account to list your shop and products',
+                            ? 'Sign in to manage your shop'
+                            : 'Create an account to list your products',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
-                      // Registration fields
-                      if (!widget.isLogin) ...[
-                        _buildTextField(
-                          label: 'Shop Name',
-                          hint: 'Enter your shop name',
-                          icon: Icons.store,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter shop name';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Location',
-                          hint: 'Enter shop location',
-                          icon: Icons.location_on,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter shop location';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'WhatsApp Number',
-                          hint: 'Enter WhatsApp number',
-                          icon: Icons.phone,
-                          keyboardType: TextInputType.phone,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter WhatsApp number';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                      // Common fields for both login and registration
-                      _buildTextField(
-                        label: 'Email',
-                        hint: 'Enter your email',
-                        icon: Icons.email,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter email';
-                          }
-                          if (!value.contains('@')) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      _buildTextField(
-                        label: 'Password',
-                        hint: 'Enter your password',
-                        icon: Icons.lock,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter password';
-                          }
-                          if (value.length < 6) {
-                            return 'Password must be at least 6 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      if (widget.isLogin) ...[
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              _showForgotPasswordDialog(context);
-                            },
-                            child: const Text('Forgot Password?'),
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // Handle login or registration logic
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    widget.isLogin
-                                        ? 'Login Successful!'
-                                        : 'Registration Successful!',
+                      
+                      // Form
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Registration fields
+                            if (!widget.isLogin) ...[
+                              _buildTextField(
+                                label: 'Shop Name',
+                                hint: 'Enter your shop name',
+                                icon: Icons.store,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter shop name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              _buildTextField(
+                                label: 'Location',
+                                hint: 'Enter shop location',
+                                icon: Icons.location_on,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter shop location';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              _buildTextField(
+                                label: 'WhatsApp Number',
+                                hint: 'Enter WhatsApp number',
+                                icon: Icons.phone,
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter WhatsApp number';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                            
+                            // Common fields for both login and registration
+                            _buildTextField(
+                              label: 'Email',
+                              hint: 'Enter your email',
+                              icon: Icons.email,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                if (!value.contains('@')) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            _buildTextField(
+                              label: 'Password',
+                              hint: 'Enter your password',
+                              icon: Icons.lock,
+                              obscureText: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            ),
+                            
+                            if (widget.isLogin) ...[
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    _showForgotPasswordDialog(context);
+                                  },
+                                  child: const Text('Forgot Password?'),
+                                ),
+                              ),
+                            ],
+                            
+                            const SizedBox(height: 24),
+                            
+                            // Submit button
+                            SizedBox(
+                              height: 56,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    // Handle login or registration logic
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          widget.isLogin
+                                              ? 'Login Successful!'
+                                              : 'Registration Successful!',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.indigo[800],
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
-                              );
-                            }
-                          },
-                          child: Text(
-                            widget.isLogin ? 'Login' : 'Register',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.isLogin
-                                ? "Don't have an account?"
-                                : 'Already have an account?',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ShopkeeperAuthPage(
-                                    isLogin: !widget.isLogin,
+                                child: Text(
+                                  widget.isLogin ? 'Login' : 'Register',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              );
-                            },
-                            child: Text(
-                              widget.isLogin ? 'Register' : 'Login',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ],
+                            
+                            const SizedBox(height: 24),
+                            
+                            // Login/Register switch
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.isLogin
+                                      ? "Don't have an account?"
+                                      : 'Already have an account?',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ShopkeeperAuthPage(
+                                          isLogin: !widget.isLogin,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    widget.isLogin ? 'Register' : 'Login',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.indigo,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -518,7 +592,26 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: Icon(icon, color: Colors.grey[600]),
+            prefixIcon: Icon(icon, color: Colors.indigo),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.indigo[800]!, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
+            filled: true,
+            fillColor: Colors.grey[50],
+            contentPadding: const EdgeInsets.symmetric(vertical: 16),
           ),
           validator: validator,
         ),
@@ -545,13 +638,18 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 prefixIcon: const Icon(Icons.email),
+                filled: true,
+                fillColor: Colors.grey[50],
               ),
               keyboardType: TextInputType.emailAddress,
             ),
           ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
         actions: [
           TextButton(
@@ -568,6 +666,13 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                 ),
               );
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigo[800],
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
             child: const Text('Send Link'),
           ),
         ],
@@ -575,7 +680,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
     );
   }
 }
-
+// Customer authentication page (handles both login and registration)
 // Customer authentication page (handles both login and registration)
 class CustomerAuthPage extends StatefulWidget {
   final bool isLogin;
@@ -588,6 +693,18 @@ class CustomerAuthPage extends StatefulWidget {
 
 class _CustomerAuthPageState extends State<CustomerAuthPage> {
   final _formKey = GlobalKey<FormState>();
+  File? _profileImage;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    
+    if (image != null) {
+      setState(() {
+        _profileImage = File(image.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -611,12 +728,61 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(24),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Header icon
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Customer profile image (only for registration)
+                      if (!widget.isLogin) ...[
+                        Align(
+                          alignment: Alignment.center,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.indigo[50],
+                                  shape: BoxShape.circle,
+                                  image: _profileImage != null
+                                    ? DecorationImage(
+                                        image: FileImage(_profileImage!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                                ),
+                                child: _profileImage == null
+                                  ? Icon(
+                                      Icons.person,
+                                      size: 60,
+                                      color: Colors.indigo[800],
+                                    )
+                                  : null,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: _pickImage,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.indigo[800],
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.add_a_photo,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ] else ...[
+                        // Login icon
                         Align(
                           alignment: Alignment.center,
                           child: Container(
@@ -633,158 +799,254 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        Text(
-                          widget.isLogin ? 'Welcome Back!' : 'Create Account',
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                      ],
+
+                      // Header text
+                      Text(
+                        widget.isLogin ? 'Welcome Back!' : 'Create Account',
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          widget.isLogin
-                              ? 'Sign in to continue shopping'
-                              : 'Sign up to start shopping',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[600],
-                          ),
-                          textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.isLogin
+                            ? 'Sign in to continue shopping'
+                            : 'Sign up to start shopping',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
                         ),
-                        const SizedBox(height: 32),
-                        // Registration fields
-                        if (!widget.isLogin) ...[
-                          _buildTextField(
-                            label: 'Full Name',
-                            hint: 'Enter your full name',
-                            icon: Icons.person,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          _buildTextField(
-                            label: 'Phone Number',
-                            hint: 'Enter your phone number',
-                            icon: Icons.phone,
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter phone number';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                        // Common fields for both login and registration
-                        _buildTextField(
-                          label: 'Email',
-                          hint: 'Enter your email',
-                          icon: Icons.email,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter email';
-                            }
-                            if (!value.contains('@')) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Password',
-                          hint: 'Enter your password',
-                          icon: Icons.lock,
-                          obscureText: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
-                        ),
-                        if (widget.isLogin) ...[
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
-                                _showForgotPasswordDialog(context);
-                              },
-                              child: const Text('Forgot Password?'),
-                            ),
-                          ),
-                        ],
-                        const SizedBox(height: 24),
-                        SizedBox(
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Handle login or registration logic
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      widget.isLogin
-                                          ? 'Login Successful!'
-                                          : 'Registration Successful!',
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            child: Text(
-                              widget.isLogin ? 'Login' : 'Register',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      
+                      // Form
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
-                              widget.isLogin
-                                  ? "Don't have an account?"
-                                  : 'Already have an account?',
-                              style: TextStyle(
-                                color: Colors.grey[600],
+                            // Registration fields
+                            if (!widget.isLogin) ...[
+                              _buildTextField(
+                                label: 'Full Name',
+                                hint: 'Enter your full name',
+                                icon: Icons.person,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your name';
+                                  }
+                                  return null;
+                                },
                               ),
+                              const SizedBox(height: 16),
+                              _buildTextField(
+                                label: 'Phone Number',
+                                hint: 'Enter your phone number',
+                                icon: Icons.phone,
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter phone number';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              _buildTextField(
+                                label: 'Address',
+                                hint: 'Enter your delivery address',
+                                icon: Icons.location_on,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your address';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                            
+                            // Common fields for both login and registration
+                            _buildTextField(
+                              label: 'Email',
+                              hint: 'Enter your email',
+                              icon: Icons.email,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                if (!value.contains('@')) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CustomerAuthPage(
-                                      isLogin: !widget.isLogin,
+                            const SizedBox(height: 16),
+                            _buildTextField(
+                              label: 'Password',
+                              hint: 'Enter your password',
+                              icon: Icons.lock,
+                              obscureText: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            ),
+                            
+                            if (widget.isLogin) ...[
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    _showForgotPasswordDialog(context);
+                                  },
+                                  child: const Text(
+                                    'Forgot Password?',
+                                    style: TextStyle(
+                                      color: Colors.indigo,
                                     ),
                                   ),
-                                );
-                              },
-                              child: Text(
-                                widget.isLogin ? 'Register' : 'Login',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                            
+                            const SizedBox(height: 24),
+                            
+                            // Submit button
+                            SizedBox(
+                              height: 56,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    // Handle login or registration logic
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          widget.isLogin
+                                              ? 'Login Successful!'
+                                              : 'Registration Successful!',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.indigo[800],
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: Text(
+                                  widget.isLogin ? 'Login' : 'Register',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            // Social login options
+                            if (widget.isLogin) ...[
+                              Row(
+                                children: [
+                                  Expanded(child: Divider(color: Colors.grey[400])),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Text(
+                                      'OR',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(child: Divider(color: Colors.grey[400])),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _socialLoginButton(
+                                    icon: Icons.g_mobiledata,
+                                    color: Colors.red,
+                                    onTap: () {
+                                      // Google login logic
+                                    },
+                                  ),
+                                  const SizedBox(width: 16),
+                                  _socialLoginButton(
+                                    icon: Icons.facebook,
+                                    color: Colors.blue[800]!,
+                                    onTap: () {
+                                      // Facebook login logic
+                                    },
+                                  ),
+                                  const SizedBox(width: 16),
+                                  _socialLoginButton(
+                                    icon: Icons.phone_android,
+                                    color: Colors.green[700]!,
+                                    onTap: () {
+                                      // Phone login logic
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                            
+                            const SizedBox(height: 24),
+                            
+                            // Login/Register switch
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.isLogin
+                                      ? "Don't have an account?"
+                                      : 'Already have an account?',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CustomerAuthPage(
+                                          isLogin: !widget.isLogin,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    widget.isLogin ? 'Register' : 'Login',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.indigo,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -819,11 +1081,53 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: Icon(icon, color: Colors.grey[600]),
+            prefixIcon: Icon(icon, color: Colors.indigo),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.indigo[800]!, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
+            filled: true,
+            fillColor: Colors.grey[50],
+            contentPadding: const EdgeInsets.symmetric(vertical: 16),
           ),
           validator: validator,
         ),
       ],
+    );
+  }
+
+  Widget _socialLoginButton({
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]!),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          icon,
+          color: color,
+          size: 32,
+        ),
+      ),
     );
   }
 
@@ -846,13 +1150,18 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 prefixIcon: const Icon(Icons.email),
+                filled: true,
+                fillColor: Colors.grey[50],
               ),
               keyboardType: TextInputType.emailAddress,
             ),
           ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
         actions: [
           TextButton(
@@ -869,6 +1178,13 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                 ),
               );
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigo[800],
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
             child: const Text('Send Link'),
           ),
         ],
