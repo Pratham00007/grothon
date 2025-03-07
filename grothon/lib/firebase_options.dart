@@ -3,6 +3,8 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -40,10 +42,10 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBLS25tayVZ-GKBaV0aK-R2hMbaCef_XIs',
-    appId: '1:877786522652:web:54b57047a8e31599292bd9',
-    messagingSenderId: '877786522652',
+  static  FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['APIKEY']!,
+    appId: dotenv.env['APIID']!,
+    messagingSenderId: dotenv.env['MESSAGINGSERVERID']!,
     projectId: 'grothon-b22cb',
     authDomain: 'grothon-b22cb.firebaseapp.com',
     storageBucket: 'grothon-b22cb.firebasestorage.app',
