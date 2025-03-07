@@ -17,7 +17,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await dotenv.load(fileName: "grothon/.env");
+  await dotenv.load(fileName: ".env");
   runApp(
     MultiProvider(
       providers: [

@@ -1,7 +1,8 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:grothon/screens/home_screen.dart';
+import 'package:grothon/screens/login%20and%20signup/user_login_fire.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CustomerAuthPage extends StatefulWidget {
@@ -16,11 +17,44 @@ class CustomerAuthPage extends StatefulWidget {
 class _CustomerAuthPageState extends State<CustomerAuthPage> {
   final _formKey = GlobalKey<FormState>();
   File? _profileImage;
+  final TextEditingController emailcont = TextEditingController();
+  final TextEditingController passcont = TextEditingController();
+  final TextEditingController namecont = TextEditingController();
+  final TextEditingController phnocont = TextEditingController();
+  final TextEditingController deladdcont = TextEditingController();
+  final TextEditingController psresetcont = TextEditingController();
+
+  void despose() {
+    super.dispose();
+    emailcont.dispose();
+    passcont.dispose();
+    namecont.dispose();
+    phnocont.dispose();
+    deladdcont.dispose();
+    psresetcont.dispose();
+  }
+
+  signUpUser() async {
+    String res = await UserAuthenticationService().SignupUser(
+        email: emailcont.text,
+        password: passcont.text,
+        Name: namecont.text,
+        Address: deladdcont.text,
+        phone_num: phnocont.text);
+    if (res == "Success") {
+      // navigate to next screen
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else {
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(res)));
+    }
+  }
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (image != null) {
       setState(() {
         _profileImage = File(image.path);
@@ -66,19 +100,19 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                                   color: Colors.indigo[50],
                                   shape: BoxShape.circle,
                                   image: _profileImage != null
-                                    ? DecorationImage(
-                                        image: FileImage(_profileImage!),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
+                                      ? DecorationImage(
+                                          image: FileImage(_profileImage!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
                                 ),
                                 child: _profileImage == null
-                                  ? Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: Colors.indigo[800],
-                                    )
-                                  : null,
+                                    ? Icon(
+                                        Icons.person,
+                                        size: 60,
+                                        color: Colors.indigo[800],
+                                      )
+                                    : null,
                               ),
                               Positioned(
                                 bottom: 0,
@@ -144,7 +178,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
-                      
+
                       // Form
                       Form(
                         key: _formKey,
@@ -154,6 +188,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                             // Registration fields
                             if (!widget.isLogin) ...[
                               _buildTextField(
+                                contr: namecont,
                                 label: 'Full Name',
                                 hint: 'Enter your full name',
                                 icon: Icons.person,
@@ -166,6 +201,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                               ),
                               const SizedBox(height: 16),
                               _buildTextField(
+                                contr: phnocont,
                                 label: 'Phone Number',
                                 hint: 'Enter your phone number',
                                 icon: Icons.phone,
@@ -179,6 +215,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                               ),
                               const SizedBox(height: 16),
                               _buildTextField(
+                                contr: deladdcont,
                                 label: 'Address',
                                 hint: 'Enter your delivery address',
                                 icon: Icons.location_on,
@@ -191,9 +228,10 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                               ),
                               const SizedBox(height: 16),
                             ],
-                            
+
                             // Common fields for both login and registration
                             _buildTextField(
+                              contr: emailcont,
                               label: 'Email',
                               hint: 'Enter your email',
                               icon: Icons.email,
@@ -210,6 +248,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                             ),
                             const SizedBox(height: 16),
                             _buildTextField(
+                              contr: passcont,
                               label: 'Password',
                               hint: 'Enter your password',
                               icon: Icons.lock,
@@ -224,7 +263,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                                 return null;
                               },
                             ),
-                            
+
                             if (widget.isLogin) ...[
                               Align(
                                 alignment: Alignment.centerRight,
@@ -241,26 +280,27 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                                 ),
                               ),
                             ],
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             // Submit button
                             SizedBox(
                               height: 56,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // Handle login or registration logic
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          widget.isLogin
-                                              ? 'Login Successful!'
-                                              : 'Registration Successful!',
-                                        ),
-                                      ),
-                                    );
-                                  }
+                                  signUpUser();
+                                  // if (_formKey.currentState!.validate()) {
+                                  //   // Handle login or registration logic
+                                  //   ScaffoldMessenger.of(context).showSnackBar(
+                                  //     SnackBar(
+                                  //       content: Text(
+                                  //         widget.isLogin
+                                  //             ? 'Login Successful!'
+                                  //             : 'Registration Successful!',
+                                  //       ),
+                                  //     ),
+                                  //   );
+                                  // }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.indigo[800],
@@ -278,16 +318,18 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                                 ),
                               ),
                             ),
-                            
+
                             const SizedBox(height: 16),
-                            
+
                             // Social login options
                             if (widget.isLogin) ...[
                               Row(
                                 children: [
-                                  Expanded(child: Divider(color: Colors.grey[400])),
+                                  Expanded(
+                                      child: Divider(color: Colors.grey[400])),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: Text(
                                       'OR',
                                       style: TextStyle(
@@ -296,7 +338,8 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                                       ),
                                     ),
                                   ),
-                                  Expanded(child: Divider(color: Colors.grey[400])),
+                                  Expanded(
+                                      child: Divider(color: Colors.grey[400])),
                                 ],
                               ),
                               const SizedBox(height: 16),
@@ -329,9 +372,9 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                                 ],
                               ),
                             ],
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             // Login/Register switch
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -383,6 +426,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
     required String label,
     required String hint,
     required IconData icon,
+    required TextEditingController contr,
     bool obscureText = false,
     TextInputType? keyboardType,
     String? Function(String?)? validator,
@@ -399,6 +443,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: contr,
           obscureText: obscureText,
           keyboardType: keyboardType,
           decoration: InputDecoration(
@@ -454,8 +499,6 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
   }
 
   void _showForgotPasswordDialog(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -468,7 +511,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: emailController,
+              controller: psresetcont,
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
