@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:grothon/providers/shop_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:grothon/screens/login%20and%20signup/shopkeeper_login.dart';
-import 'package:grothon/screens/shop/ProductsListPage%20.dart';
-import 'package:grothon/screens/shop/ShopProfilePage.dart';
 import 'firebase_options.dart';
 
 import 'package:grothon/screens/login%20and%20signup/login.dart';

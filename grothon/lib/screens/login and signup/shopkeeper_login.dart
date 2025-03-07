@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:grothon/screens/login%20and%20signup/shopkeeper_login_fire.dart';
+import 'package:grothon/screens/shop/ProductsListPage%20.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ShopkeeperAuthPage extends StatefulWidget {
@@ -15,11 +17,44 @@ class ShopkeeperAuthPage extends StatefulWidget {
 class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
   File? _shopImage;
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController emailcont = TextEditingController();
+  final TextEditingController passcont = TextEditingController();
+  final TextEditingController shopnamecont = TextEditingController();
+  final TextEditingController phnocont = TextEditingController();
+  final TextEditingController shopaddcont = TextEditingController();
+  final TextEditingController psresetcont = TextEditingController();
+
+  void despose() {
+    super.dispose();
+    emailcont.dispose();
+    passcont.dispose();
+    shopnamecont.dispose();
+    phnocont.dispose();
+    shopaddcont.dispose();
+    psresetcont.dispose();
+  }
+
+  signUpShopkeeper() async {
+    String res = await ShopKeeperAuthenticationService().SignupShop(
+        email: emailcont.text,
+        password: passcont.text,
+        shopName: shopnamecont.text,
+        shopAddress: shopaddcont.text,
+        phone_num: phnocont.text);
+    if (res == "Success") {
+      // navigate to next screen
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ProductsListPage()));
+    } else {
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(res)));
+    }
+  }
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (image != null) {
       setState(() {
         _shopImage = File(image.path);
@@ -66,19 +101,19 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                                   color: Colors.indigo[50],
                                   shape: BoxShape.circle,
                                   image: _shopImage != null
-                                    ? DecorationImage(
-                                        image: FileImage(_shopImage!),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
+                                      ? DecorationImage(
+                                          image: FileImage(_shopImage!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
                                 ),
                                 child: _shopImage == null
-                                  ? Icon(
-                                      Icons.storefront,
-                                      size: 60,
-                                      color: Colors.indigo[800],
-                                    )
-                                  : null,
+                                    ? Icon(
+                                        Icons.storefront,
+                                        size: 60,
+                                        color: Colors.indigo[800],
+                                      )
+                                    : null,
                               ),
                               Positioned(
                                 bottom: 0,
@@ -122,7 +157,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                         ),
                         const SizedBox(height: 24),
                       ],
-                      
+
                       // Header text
                       Text(
                         widget.isLogin ? 'Welcome Back!' : 'Register Your Shop',
@@ -144,7 +179,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
-                      
+
                       // Form
                       Form(
                         key: _formKey,
@@ -154,6 +189,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                             // Registration fields
                             if (!widget.isLogin) ...[
                               _buildTextField(
+                                contr: shopnamecont,
                                 label: 'Shop Name',
                                 hint: 'Enter your shop name',
                                 icon: Icons.store,
@@ -166,6 +202,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                               ),
                               const SizedBox(height: 16),
                               _buildTextField(
+                                contr: shopaddcont,
                                 label: 'Location',
                                 hint: 'Enter shop location',
                                 icon: Icons.location_on,
@@ -178,6 +215,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                               ),
                               const SizedBox(height: 16),
                               _buildTextField(
+                                contr: phnocont,
                                 label: 'WhatsApp Number',
                                 hint: 'Enter WhatsApp number',
                                 icon: Icons.phone,
@@ -191,9 +229,10 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                               ),
                               const SizedBox(height: 16),
                             ],
-                            
+
                             // Common fields for both login and registration
                             _buildTextField(
+                              contr: emailcont,
                               label: 'Email',
                               hint: 'Enter your email',
                               icon: Icons.email,
@@ -210,6 +249,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                             ),
                             const SizedBox(height: 16),
                             _buildTextField(
+                              contr: passcont,
                               label: 'Password',
                               hint: 'Enter your password',
                               icon: Icons.lock,
@@ -224,7 +264,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                                 return null;
                               },
                             ),
-                            
+
                             if (widget.isLogin) ...[
                               Align(
                                 alignment: Alignment.centerRight,
@@ -236,26 +276,27 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                                 ),
                               ),
                             ],
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             // Submit button
                             SizedBox(
                               height: 56,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // Handle login or registration logic
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          widget.isLogin
-                                              ? 'Login Successful!'
-                                              : 'Registration Successful!',
-                                        ),
-                                      ),
-                                    );
-                                  }
+                                  signUpShopkeeper();
+                                  // if (_formKey.currentState!.validate()) {
+                                  //   // Handle login or registration logic
+                                  //   ScaffoldMessenger.of(context).showSnackBar(
+                                  //     SnackBar(
+                                  //       content: Text(
+                                  //         widget.isLogin
+                                  //             ? 'Login Successful!'
+                                  //             : 'Registration Successful!',
+                                  //       ),
+                                  //     ),
+                                  //   );
+                                  // }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.indigo[800],
@@ -273,9 +314,9 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                                 ),
                               ),
                             ),
-                            
+
                             const SizedBox(height: 24),
-                            
+
                             // Login/Register switch
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -293,7 +334,8 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ShopkeeperAuthPage(
+                                        builder: (context) =>
+                                            ShopkeeperAuthPage(
                                           isLogin: !widget.isLogin,
                                         ),
                                       ),
@@ -327,6 +369,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
     required String label,
     required String hint,
     required IconData icon,
+    required TextEditingController contr,
     bool obscureText = false,
     TextInputType? keyboardType,
     String? Function(String?)? validator,
@@ -343,6 +386,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: contr,
           obscureText: obscureText,
           keyboardType: keyboardType,
           decoration: InputDecoration(
@@ -375,8 +419,6 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
   }
 
   void _showForgotPasswordDialog(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -389,7 +431,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: emailController,
+              controller: psresetcont,
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
