@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grothon/models/search_results.dart';
 import 'package:provider/provider.dart';
-import '../providers/shop_provider.dart';
+import '../../providers/shop_provider.dart';
 import 'shop_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {

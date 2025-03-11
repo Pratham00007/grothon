@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grothon/models/wishlistmanger.dart';
-import 'package:grothon/screens/cart.dart';
-import 'package:grothon/screens/productdetailscreen.dart';
+import 'package:grothon/screens/user/cart.dart';
+import 'package:grothon/screens/user/productdetailscreen.dart';
 
 
 class WishlistScreen extends StatefulWidget {

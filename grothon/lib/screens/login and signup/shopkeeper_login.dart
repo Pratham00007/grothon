@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grothon/screens/login%20and%20signup/shopkeeper_login_fire.dart';
-import 'package:grothon/screens/shop/ProductsListPage%20.dart';
+import 'package:grothon/screens/shop/ProductsListPage_shopkeeper%20.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ShopkeeperAuthPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
         
       });
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => ProductsListPage()));
+          MaterialPageRoute(builder: (context) => ProductsListPage(uid: FirebaseAuth.instance.currentUser!.uid,)));
     } else {
       setState(() {
         isLoading = false;

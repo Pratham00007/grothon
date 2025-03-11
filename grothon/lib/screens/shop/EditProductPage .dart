@@ -55,7 +55,7 @@ class _EditProductPageState extends State<EditProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Product'),
+        title: const Text('Edit Product',style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.indigo,
       ),
       body: SingleChildScrollView(
@@ -209,7 +209,7 @@ class _EditProductPageState extends State<EditProductPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text('Save Changes', style: TextStyle(fontSize: 16)),
+                      child: const Text('Save Changes', style: TextStyle(fontSize: 16,color: Colors.white)),
                     ),
                   ),
                   const SizedBox(width: 16),

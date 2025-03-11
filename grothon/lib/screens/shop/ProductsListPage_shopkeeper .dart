@@ -1,13 +1,18 @@
 // products_list_page.dart
 import 'package:flutter/material.dart';
-import 'package:grothon/common/EditProductPage%20.dart';
+import 'package:grothon/screens/shop/EditProductPage%20.dart';
 import 'package:grothon/screens/shop/AddProductPage.dart';
+import 'package:grothon/screens/shop/ShopProfilePage.dart';
 import 'package:grothon/screens/shop/product_model.dart';
 import 'package:intl/intl.dart';
 
 
 class ProductsListPage extends StatefulWidget {
-  const ProductsListPage({Key? key}) : super(key: key);
+  final dynamic uid;
+
+  const ProductsListPage({Key? key, required this.uid}) : super(key: key);
+
+
 
   @override
   _ProductsListPageState createState() => _ProductsListPageState();
@@ -76,7 +81,7 @@ class _ProductsListPageState extends State<ProductsListPage> {
   }
 
   void _navigateToShopProfile() {
-    Navigator.pushNamed(context, '/profile');
+    Navigator.push(context,MaterialPageRoute(builder: (context)=> ShopProfilePage(uid:widget.uid,)));
   }
 
   @override
@@ -85,7 +90,7 @@ class _ProductsListPageState extends State<ProductsListPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Shop Products'),
+        title: const Text('My Shop Products',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.indigo,
         actions: [
           GestureDetector(

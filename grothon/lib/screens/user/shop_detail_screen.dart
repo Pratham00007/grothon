@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:grothon/models/wishlistmanger.dart';
-import 'package:grothon/screens/cart.dart';
-import 'package:grothon/screens/cart_n_checkout.dart.dart';
-import 'package:grothon/screens/productdetailscreen.dart';
-import 'package:grothon/screens/wishlist.dart';
-import '../models/shop.dart';
+import 'package:grothon/screens/user/cart.dart';
+import 'package:grothon/screens/user/cart_n_checkout.dart.dart';
+import 'package:grothon/screens/user/productdetailscreen.dart';
+import 'package:grothon/screens/user/wishlist.dart';
+import '../../models/shop.dart';
 
 
 class ShopDetailScreen extends StatefulWidget {

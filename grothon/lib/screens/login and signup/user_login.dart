@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grothon/screens/home_screen.dart';
+import 'package:grothon/screens/user/home_screen.dart';
 import 'package:grothon/screens/login%20and%20signup/user_login_fire.dart';
 import 'package:image_picker/image_picker.dart';
 

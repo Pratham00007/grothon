@@ -1,10 +1,14 @@
 // shop_profile_page.dart
 import 'package:flutter/material.dart';
+import 'package:grothon/screens/login%20and%20signup/login.dart';
+import 'package:grothon/screens/login%20and%20signup/shopkeeper_login_fire.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class ShopProfilePage extends StatefulWidget {
-  const ShopProfilePage({Key? key}) : super(key: key);
+  final dynamic uid;
+
+  const ShopProfilePage({Key? key, required this.uid}) : super(key: key);
 
   @override
   _ShopProfilePageState createState() => _ShopProfilePageState();
@@ -14,17 +18,24 @@ class _ShopProfilePageState extends State<ShopProfilePage> {
   final _formKey = GlobalKey<FormState>();
   File? _shopImage;
   final ImagePicker _picker = ImagePicker();
+  bool isloading = false;
 
   // Form controllers
-  final TextEditingController _shopNameController = TextEditingController(text: "My Shop");
-  final TextEditingController _locationController = TextEditingController(text: "123 Main Street, City");
-  final TextEditingController _phoneController = TextEditingController(text: "+1 234 567 8900");
-  final TextEditingController _emailController = TextEditingController(text: "shop@example.com");
+  final TextEditingController _shopNameController =
+      TextEditingController(text: "My Shop");
+  final TextEditingController _locationController =
+      TextEditingController(text: "123 Main Street, City");
+  final TextEditingController _phoneController =
+      TextEditingController(text: "+1 234 567 8900");
+  final TextEditingController _emailController =
+      TextEditingController(text: "shop@example.com");
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _shopImage = File(pickedFile.path);
@@ -47,7 +58,8 @@ class _ShopProfilePageState extends State<ShopProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shop Profile'),
+        title:
+            const Text('Shop Profile', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.indigo,
         elevation: 0,
       ),
@@ -86,7 +98,8 @@ class _ShopProfilePageState extends State<ShopProfilePage> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const Icon(Icons.store, size: 80, color: Colors.indigo),
+                            : const Icon(Icons.store,
+                                size: 80, color: Colors.indigo),
                       ),
                       Positioned(
                         bottom: 0,
@@ -236,7 +249,8 @@ class _ShopProfilePageState extends State<ShopProfilePage> {
                       if (_formKey.currentState!.validate()) {
                         // Save user information
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Profile updated successfully')),
+                          const SnackBar(
+                              content: Text('Profile updated successfully')),
                         );
                         Navigator.pop(context);
                       }
@@ -249,10 +263,51 @@ class _ShopProfilePageState extends State<ShopProfilePage> {
                     ),
                     child: const Text(
                       'Save Changes',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
                 ),
+                const SizedBox(height: 24),
+
+                // Submit button
+                SizedBox(
+                  height: 56,
+                  child: isloading
+                      ? LinearProgressIndicator()
+                      // ? Transform.scale(
+                      //     scale: 0.3,
+                      //     child: CircularProgressIndicator(),
+                      //     )
+                      : ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              isloading = true;
+                            });
+                            await ShopKeeperAuthenticationService().signOut();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => WelcomePage()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.fromHeight(56),
+                            backgroundColor:
+                                const Color.fromARGB(255, 230, 15, 0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            "SignOut",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                ),
+
+                const SizedBox(height: 24),
               ],
             ),
           ),

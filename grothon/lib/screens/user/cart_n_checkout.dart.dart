@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grothon/screens/cart.dart';
+import 'package:grothon/screens/user/cart.dart';
 
 
 class CartScreen extends StatefulWidget {

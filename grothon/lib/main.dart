@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:grothon/providers/shop_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:grothon/screens/shop/ShopProfilePage.dart';
+import 'package:grothon/screens/user/home_screen.dart';
 import 'firebase_options.dart';
 
 import 'package:grothon/screens/login%20and%20signup/login.dart';
@@ -38,7 +40,7 @@ class ShoppingApp extends StatelessWidget {
           centerTitle: true,
         ),
       ),
-      home: WelcomePage(),
+      home: HomeScreen(),
     );
   }
 }
