@@ -23,6 +23,7 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
   final TextEditingController phnocont = TextEditingController();
   final TextEditingController shopaddcont = TextEditingController();
   final TextEditingController psresetcont = TextEditingController();
+  bool isLoading = false;
 
   void despose() {
     super.dispose();
@@ -43,9 +44,16 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
         phone_num: phnocont.text);
     if (res == "Success") {
       // navigate to next screen
+      setState(() {
+        isLoading = false;
+        
+      });
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => ProductsListPage()));
     } else {
+      setState(() {
+        isLoading = false;
+      });
       return ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(res)));
     }
@@ -282,37 +290,47 @@ class _ShopkeeperAuthPageState extends State<ShopkeeperAuthPage> {
                             // Submit button
                             SizedBox(
                               height: 56,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  signUpShopkeeper();
-                                  // if (_formKey.currentState!.validate()) {
-                                  //   // Handle login or registration logic
-                                  //   ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //       content: Text(
-                                  //         widget.isLogin
-                                  //             ? 'Login Successful!'
-                                  //             : 'Registration Successful!',
-                                  //       ),
-                                  //     ),
-                                  //   );
-                                  // }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.indigo[800],
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: Text(
-                                  widget.isLogin ? 'Login' : 'Register',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
+                              child: isLoading
+                              ? LinearProgressIndicator()
+                                  // ? Transform.scale(
+                                  //     scale: 0.3,
+                                  //     child: CircularProgressIndicator(),
+                                  //     )
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        signUpShopkeeper();
+                                        // if (_formKey.currentState!.validate()) {
+                                        //   // Handle login or registration logic
+                                        //   ScaffoldMessenger.of(context).showSnackBar(
+                                        //     SnackBar(
+                                        //       content: Text(
+                                        //         widget.isLogin
+                                        //             ? 'Login Successful!'
+                                        //             : 'Registration Successful!',
+                                        //       ),
+                                        //     ),
+                                        //   );
+                                        // }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.indigo[800],
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        widget.isLogin ? 'Login' : 'Register',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
                             ),
 
                             const SizedBox(height: 24),

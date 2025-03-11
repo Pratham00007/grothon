@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grothon/screens/home_screen.dart';
 import 'package:grothon/screens/login%20and%20signup/user_login_fire.dart';
@@ -23,6 +23,7 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
   final TextEditingController phnocont = TextEditingController();
   final TextEditingController deladdcont = TextEditingController();
   final TextEditingController psresetcont = TextEditingController();
+  bool isloading = false;
 
   void despose() {
     super.dispose();
@@ -42,10 +43,16 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
         Address: deladdcont.text,
         phone_num: phnocont.text);
     if (res == "Success") {
+      setState(() {
+        isloading = false;
+      });
       // navigate to next screen
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => HomeScreen()));
     } else {
+      setState(() {
+        isloading = false;
+      });
       return ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(res)));
     }
@@ -286,37 +293,43 @@ class _CustomerAuthPageState extends State<CustomerAuthPage> {
                             // Submit button
                             SizedBox(
                               height: 56,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  signUpUser();
-                                  // if (_formKey.currentState!.validate()) {
-                                  //   // Handle login or registration logic
-                                  //   ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //       content: Text(
-                                  //         widget.isLogin
-                                  //             ? 'Login Successful!'
-                                  //             : 'Registration Successful!',
-                                  //       ),
-                                  //     ),
-                                  //   );
-                                  // }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.indigo[800],
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: Text(
-                                  widget.isLogin ? 'Login' : 'Register',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
+                              child: isloading
+                                  ? LinearProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isloading = true;
+                                        });
+                                        signUpUser();
+                                        // if (_formKey.currentState!.validate()) {
+                                        //   // Handle login or registration logic
+                                        //   ScaffoldMessenger.of(context).showSnackBar(
+                                        //     SnackBar(
+                                        //       content: Text(
+                                        //         widget.isLogin
+                                        //             ? 'Login Successful!'
+                                        //             : 'Registration Successful!',
+                                        //       ),
+                                        //     ),
+                                        //   );
+                                        // }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.indigo[800],
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        widget.isLogin ? 'Login' : 'Register',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
                             ),
 
                             const SizedBox(height: 16),
