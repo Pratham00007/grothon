@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grothon/models/search_results.dart';
 import 'package:grothon/screens/shop/profile_screen.dart';
-import 'package:grothon/screens/user/cart_n_checkout.dart.dart';
+import 'package:grothon/screens/user/cart_screen.dart';
 import 'package:provider/provider.dart';
 import '../../providers/shop_provider.dart';
 import 'shop_detail_screen.dart';
@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<SearchResult> _searchResults = [];
   int _selectedIndex = 0;
+
 
   void _performSearch(String query) {
     if (query.isEmpty) {
@@ -86,6 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+
+      
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -274,6 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: Container(
+              
               height: 270, // Fixed height to prevent overflow
               margin: EdgeInsets.only(bottom: 10),
               child: Card(
@@ -284,6 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    
                     // Shop Image
                     ClipRRect(
                       borderRadius: BorderRadius.vertical(
@@ -345,10 +350,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+              
             ),
+
           );
         },
       ),
     );
   }
 }
+
