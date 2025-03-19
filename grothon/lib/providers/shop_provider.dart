@@ -12,6 +12,7 @@ class ShopProvider with ChangeNotifier {
       photoUrl: 'https://images.pexels.com/photos/916446/pexels-photo-916446.jpeg',
       latitude: 40.7128,
       longitude: -74.0060,
+      distance: 1.5,
       items: [
         ShopItem(
           id: '1',
@@ -22,8 +23,8 @@ class ShopProvider with ChangeNotifier {
         ),
         ShopItem(
           id: '2',
-          name: 'Green Apples',
-          description: 'Crisp green apples',
+          name: 'Green Grapes',
+          description: 'Crisp green grapes',
           price: 3.49,
           imageUrl: 'https://cdn.pixabay.com/photo/2023/12/07/21/16/grape-8436353_1280.jpg',
         ),
@@ -36,6 +37,7 @@ class ShopProvider with ChangeNotifier {
       photoUrl: 'https://cdn.pixabay.com/photo/2016/08/16/07/32/showcase-1597292_1280.jpg',
       latitude: 40.7300,
       longitude: -74.0100,
+      distance: 2.5,
       items: [
         ShopItem(
           id: '3',

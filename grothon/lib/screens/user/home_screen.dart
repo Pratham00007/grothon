@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:grothon/models/search_results.dart';
-import 'package:grothon/screens/shop/profile_screen.dart';
+import 'package:grothon/screens/user/profile_screen.dart';
 import 'package:grothon/screens/user/cart_screen.dart';
 import 'package:provider/provider.dart';
 import '../../providers/shop_provider.dart';
 import 'shop_detail_screen.dart';
-
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<SearchResult> _searchResults = [];
   int _selectedIndex = 0;
-
 
   void _performSearch(String query) {
     if (query.isEmpty) {
@@ -43,6 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => CartScreen()),
+      ).then((_) => setState(() => _selectedIndex = 0));
+    }
+    else if (index == 2) {
+      // Navigate to Cart page
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProfileScreen()),
       ).then((_) => setState(() => _selectedIndex = 0));
     }
   }
@@ -87,8 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
-      
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -201,16 +204,16 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: _searchResults.length,
       itemBuilder: (context, index) {
         final result = _searchResults[index];
-        
+
         return Card(
           margin: EdgeInsets.only(bottom: 8),
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                result.type == SearchResultType.Shop 
-                  ? result.shop.photoUrl  // Use shop photo for shops
-                  : result.item!.imageUrl,  // Use item image for items
+                result.type == SearchResultType.Shop
+                    ? result.shop.photoUrl // Use shop photo for shops
+                    : result.item!.imageUrl, // Use item image for items
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
@@ -225,22 +228,22 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             title: Text(
-              result.type == SearchResultType.Shop 
-                ? result.shop.name 
-                : result.item!.name,
+              result.type == SearchResultType.Shop
+                  ? result.shop.name
+                  : result.item!.name,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              result.type == SearchResultType.Shop 
-                ? result.shop.address 
-                : result.item!.description,
+              result.type == SearchResultType.Shop
+                  ? result.shop.address
+                  : result.item!.description,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             trailing: Text(
               result.type == SearchResultType.Item
-                ? '\$${result.item!.price.toStringAsFixed(2)}'
-                : '',
+                  ? '\$${result.item!.price.toStringAsFixed(2)}'
+                  : '',
               style: TextStyle(color: Colors.green),
             ),
             onTap: () {
@@ -277,8 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: Container(
-              
-              height: 270, // Fixed height to prevent overflow
+              height: 280, // Fixed height to prevent overflow
               margin: EdgeInsets.only(bottom: 10),
               child: Card(
                 elevation: 4,
@@ -288,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    
                     // Shop Image
                     ClipRRect(
                       borderRadius: BorderRadius.vertical(
@@ -307,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                     ),
-                    
+
                     // Shop Details
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -350,13 +351,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              
             ),
-
           );
         },
       ),
     );
   }
 }
-

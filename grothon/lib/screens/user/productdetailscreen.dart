@@ -13,6 +13,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  
   List<ShopItem> _similarProducts = [];
   int _quantity = 1;
 
@@ -30,17 +31,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         // Example similar products - replace with actual logic
         ShopItem(
           id: "1",
-          name: 'Similar Product 1', 
+          name: 'Banana', 
           description: 'A product similar to the current one', 
           price: 19.99, 
-          imageUrl: 'https://example.com/similar1.jpg',
+          imageUrl: 'https://images.pexels.com/photos/7194915/pexels-photo-7194915.jpeg',
         ),
         ShopItem(
           id: "2",
-          name: 'Similar Product 2', 
+          name: 'Stawbery', 
           description: 'Another similar product', 
           price: 24.99, 
-          imageUrl: 'https://example.com/similar2.jpg',
+          imageUrl: 'https://images.pexels.com/photos/1258264/pexels-photo-1258264.jpeg',
         ),
       ];
     });
