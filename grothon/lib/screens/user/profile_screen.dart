@@ -167,8 +167,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
-        backgroundColor: Colors.indigo,
+        title: Text('My Profile',style: TextStyle(color: Colors.white),),
+        backgroundColor: Color(0xFF4B39EF),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -185,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.indigo,
+                  backgroundColor: Color(0xFF4B39EF),
                   child: IconButton(
                     icon: Icon(Icons.camera_alt, color: Colors.white, size: 20),
                     onPressed: () {
@@ -348,7 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Save Button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.indigo,
+                backgroundColor:Color(0xFF4B39EF),
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -367,7 +367,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
               child: Text(
                 'Save Changes',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16,color: Colors.white),
               ),
             ),
           ],
