@@ -4,10 +4,6 @@
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![AI Powered](https://img.shields.io/badge/AI-Powered-orange.svg)
 
-<p align="center">
-  <img src="assets/app_logo.png" width="200" alt="Grothon Logo">
-</p>
-
 ## 📱 About
 
 Grothon is an AI-powered grocery shopping application that revolutionizes your shopping experience with smart product recommendations. The app learns from your shopping behavior and suggests complementary products based on your cart items and browsing history.
